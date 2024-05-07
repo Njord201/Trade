@@ -21,6 +21,9 @@ fclean: clean
 
 re: fclean all
 
+tests_run:
+# TODO
+
 IMAGE	= epitechcontent/epitest-docker
 
 docker:
