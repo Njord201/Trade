@@ -1,0 +1,75 @@
+name: chocolatine
+
+on:
+  push:
+    branches-ignore:
+    - "ga-ignore-*"
+  pull_request:
+    branches-ignore:
+    - "ga-ignore-*"
+
+env:
+  EXECUTABLES: "trade"
+
+jobs:
+  check_program_compilation:
+    runs-on: ubuntu-latest
+    container: epitechcontent/epitest-docker
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: check_presence_of_pushed_executables
+        run: |
+          if [ -z "$EXECUTABLES" ]; then
+            echo "No executable to check"
+            exit 0
+          fi
+          for executable in $EXECUTABLES; do
+            if [ ! -f $executable ]; then
+              echo "No executables are pushed! Good!"
+              exit 0
+            else
+              echo "Executables are pushed! BAD!!!"
+              exit 1
+            fi
+          done
+      - name: make_program
+        run: make
+        timeout-minutes: 5
+      - name: make_clean
+        run: make clean
+      - name: check_presence_of_executables
+        run: |
+          if [ -z "$EXECUTABLES" ]; then
+            echo "No executable to check"
+            exit 0
+          fi
+          for executable in $EXECUTABLES; do
+            if [ ! -x $executable ]; then
+              echo "Executable : $executable not found"
+              exit 1
+            fi
+          done
+
+  run_tests:
+    needs: [check_program_compilation]
+    runs-on: ubuntu-latest
+    container: epitechcontent/epitest-docker
+    steps:
+      - uses: actions/checkout@v4
+      - name: run_tests
+        run: make tests_run
+        timeout-minutes: 5
+
+  push_to_mirror:
+    if: ${{ github.event_name == 'push' }}
+    needs: [run_tests, check_coding_style]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: pixta-dev/repository-mirroring-action@v1
+        with:
+          target_repo_url: ${{ secrets.MIRROR_URL }}
+          ssh_private_key: ${{ secrets.GIT_SSH_PRIVATE_KEY }}
