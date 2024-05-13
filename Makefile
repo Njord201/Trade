@@ -11,7 +11,7 @@ all: $(NAME)
 
 $(NAME):
 	cp src/main.py $(NAME)
-	chmod +x $(NAME)
+	chmod 775 $(NAME)
 
 clean:
 	rm -rf __pycache__
