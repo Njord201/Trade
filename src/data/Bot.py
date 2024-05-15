@@ -8,10 +8,10 @@
 
 import sys
 from src.data.BotState import *
-from src.information.shift import *
 from src.information.weird import *
 from src.information.standardDeviation import *
 from src.information.relativeEvolution import *
+from src.information.rsi import *
 
 class Bot:
     def __init__(self):
@@ -44,36 +44,41 @@ class Bot:
             print(f'High: [{self.botState.charts["USDT_BTC"].highs[-1]}].', file=sys.stderr)
             print(f'Low: [{self.botState.charts["USDT_BTC"].lows[-1]}].', file=sys.stderr)
             print(f'Open: [{self.botState.charts["USDT_BTC"].opens[-1]}].', file=sys.stderr)
-            print(f'current_closing_price: [{current_closing_price}].', file=sys.stderr)
             print(f'Volume: [{self.botState.charts["USDT_BTC"].volumes[-1]}].', file=sys.stderr)
+            print(f'current_closing_price: [{current_closing_price}].', file=sys.stderr)
+
+            updateTab(self.infoValue, self.botState)
+            # standardDeviation(self.infoValue)
+            # firstdecision = calculRatioWeird(self.infoValue, current_closing_price)
+            # relativeEvolution(self.infoValue)
+
+            rsi = calculRSIDecision(self.infoValue)
 
 
-            shiftTemp(self.infoValue)
-            self.infoValue.periodTab[self.infoValue.period] = current_closing_price
-            self.infoValue.nbValue += 1
-            standardDeviation(self.infoValue)
-            decision = calculRatioWeird(self.infoValue, current_closing_price)
-            relativeEvolution(self.infoValue)
-
-
-            if (decision == BUY):
-                if (dollars == 0.0):
+            if (dollars > 0.0):
+                if (rsi < 10):
+                    print(f'BUY\n', file=sys.stderr)
+                    print(f'buy USDT_BTC {1 * affordable}', flush=True)
+                    self.infoValue.valueBuy = current_closing_price
+                # elif (rsi < 30):
+                #     print(f'BUY\n', file=sys.stderr)
+                #     print(f'buy USDT_BTC {0.5 * affordable}', flush=True)
+                else:
+                    print(f'NO MOVE\n', file=sys.stderr)
+                    print("no_moves", flush=True)
+            
+            elif (btc > 0.0):
+                if (rsi > 90):
                     print(f'SELL\n', file=sys.stderr)
                     print(f'sell USDT_BTC {1 * btc}', flush=True)
                     self.infoValue.valueBuy = 0
+                # elif (rsi > 80):
+                #     print(f'SELL\n', file=sys.stderr)
+                #     print(f'sell USDT_BTC {0.4 * btc}', flush=True)
+                #     self.infoValue.valueBuy = 0
                 else:
-                    # open = self.botState.charts["USDT_BTC"].opens[-1]
-                    # low = self.botState.charts["USDT_BTC"].lows[-1]
-                    # if ((open - low) > 30):
-                    #     print(f'NO MOVE\n', file=sys.stderr)
-                    #     print("no_moves", flush=True)
-                    # else:
-                        print(f'BUY\n', file=sys.stderr)
-                        print(f'buy USDT_BTC {1 * affordable}', flush=True)
-            elif (decision == SELL and btc > 0.0):
-                print(f'SELL\n', file=sys.stderr)
-                print(f'sell USDT_BTC {1 * btc}', flush=True)
-                self.infoValue.valueBuy = 0
+                    print(f'NO MOVE\n', file=sys.stderr)
+                    print("no_moves", flush=True)
             else:
                 print(f'NO MOVE\n', file=sys.stderr)
                 print("no_moves", flush=True)

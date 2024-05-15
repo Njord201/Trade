@@ -9,9 +9,6 @@
 from src.information.weird import *
 
 def standardDeviation(infoValue: valueHandler):
-    if (infoValue.nbValue < infoValue.period):
-        return 0
-
     averageValue = 0
     for index in range(0, len(infoValue.periodTab) - 1, 1):
         averageValue += infoValue.periodTab[index + 1]
