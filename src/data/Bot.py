@@ -60,9 +60,6 @@ class Bot:
                     print(f'BUY\n', file=sys.stderr)
                     print(f'buy USDT_BTC {1 * affordable}', flush=True)
                     self.infoValue.valueBuy = current_closing_price
-                # elif (rsi < 30):
-                #     print(f'BUY\n', file=sys.stderr)
-                #     print(f'buy USDT_BTC {0.5 * affordable}', flush=True)
                 else:
                     print(f'NO MOVE\n', file=sys.stderr)
                     print("no_moves", flush=True)
@@ -72,10 +69,10 @@ class Bot:
                     print(f'SELL\n', file=sys.stderr)
                     print(f'sell USDT_BTC {1 * btc}', flush=True)
                     self.infoValue.valueBuy = 0
-                # elif (rsi > 80):
-                #     print(f'SELL\n', file=sys.stderr)
-                #     print(f'sell USDT_BTC {0.4 * btc}', flush=True)
-                #     self.infoValue.valueBuy = 0
+                elif (rsi > 80):
+                    print(f'SELL\n', file=sys.stderr)
+                    print(f'sell USDT_BTC {0.3 * btc}', flush=True)
+                    self.infoValue.valueBuy = 0
                 else:
                     print(f'NO MOVE\n', file=sys.stderr)
                     print("no_moves", flush=True)
