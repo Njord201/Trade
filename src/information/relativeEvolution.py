@@ -9,13 +9,26 @@
 from src.information.weird import *
 
 def relativeEvolution(infoValue: valueHandler):
-    if (infoValue.valueBuy != 0):
-        firstTemp = infoValue.valueBuy
+    for buy in infoValue.dataBuy:
+        firstTemp = buy[0]
         lastTemp = infoValue.periodTab[infoValue.period -1]
         result = (lastTemp - firstTemp)
         if (firstTemp != 0):
             result = result / firstTemp
         result = result * 100
         result = round(result)
-        print(f'relativeEvolution: [{result}].', file=sys.stderr)
+        buy[2] = result
+        print(buy, file=sys.stderr)
     return 0
+
+
+def relativePeriodEvolution(infoValue: valueHandler):
+    firstTemp = infoValue.periodTab[0]
+    lastTemp = infoValue.periodTab[infoValue.period -1]
+    result = (lastTemp - firstTemp)
+    if (firstTemp != 0):
+        result = result / firstTemp
+    result = result * 100
+    result = round(result)
+    print(f'relativePeriodEvolution: {result}', file=sys.stderr)
+    return result
