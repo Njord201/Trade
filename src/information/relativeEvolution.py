@@ -6,7 +6,7 @@
 ## GroundHog
 ##
 
-from src.information.weird import *
+from information.valueHandler import *
 
 def relativeEvolution(infoValue: valueHandler):
     for buy in infoValue.dataBuy:
