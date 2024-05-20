@@ -8,7 +8,7 @@
 
 import sys
 from src.data.BotState import *
-from information.valueHandler import *
+from src.information.valueHandler import *
 from src.information.standardDeviation import *
 from src.information.relativeEvolution import *
 from src.information.rsi import *

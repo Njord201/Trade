@@ -6,7 +6,7 @@
 ## GroundHog
 ##
 
-from information.valueHandler import *
+from src.information.valueHandler import *
 
 def standardDeviation(infoValue: valueHandler):
     averageValue = 0

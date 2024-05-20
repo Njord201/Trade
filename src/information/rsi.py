@@ -8,7 +8,7 @@
 
 import sys
 from math import *
-from information.valueHandler import *
+from src.information.valueHandler import *
 from src.data.BotState import *
 
 BUY = 1
