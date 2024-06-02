@@ -50,7 +50,13 @@ class Bot:
             updateTab(self.infoValue, self.botState)
             relativeEvolution(self.infoValue)
 
-            rsi = calculRSIDecision(self.infoValue)
+            rsi_10 = calculRSIDecision(self.infoValue)
+            self.infoValue.period = 15
+            updateTab(self.infoValue, self.botState)
+            rsi_15 = calculRSIDecision(self.infoValue)
+            self.infoValue.period = 10
+            updateTab(self.infoValue, self.botState)
+
             virtuelMoney = dollars + sellable
 
             buyStatus = False
@@ -77,7 +83,7 @@ class Bot:
             print(f'self.infoValue.borneMoney[1]: {self.infoValue.borneMoney[1]}\n', file=sys.stderr)
 
 
-            if (stopLossStatus == False and rsi < 8):
+            if (stopLossStatus == False and rsi_10 < 8):
                 self.infoValue.tradingStatus = True
                 self.infoValue.borneMoney[0] = self.infoValue.borneMoney[1] - 20
                 self.infoValue.borneMoney[1] += 50
@@ -107,11 +113,17 @@ class Bot:
             # Buy if: Trading | not sell
             if (self.infoValue.tradingStatus == True and sellStatus == False and dollars >= 0.1):
 
-                if (rsi < 30):
+                if (rsi_10 < 30):
                     buyStatus = True
                     print(f'BUY\n', file=sys.stderr)
                     print(f'buy USDT_BTC {1 * affordable}', flush=True)
                     self.infoValue.dataBuy.append([current_closing_price, (0.6 * affordable) * 0.998, 0])
+
+                if (rsi_15 > 70):
+                    buyStatus = True
+                    print(f'BUY\n', file=sys.stderr)
+                    print(f'buy USDT_BTC {1 * affordable}', flush=True)
+                    self.infoValue.dataBuy.append([current_closing_price, (0.4 * affordable) * 0.998, 0])
 
             # Do nothing if: not sell | not buy | not stop loss
             if (stopLossStatus == False and sellStatus == False and buyStatus == False):

@@ -16,7 +16,8 @@ NOTHING = 3
 class valueHandler():
     def __init__(self):
         self.period = 10
-        self.periodTab = [0] * (self.period + 1)
+        self.maxPeriod = 15
+        self.periodTab = [0] * (self.maxPeriod + 1)
 
         self.dataBuy = []
         self.borneMoney = [920.0, 1100.0]
