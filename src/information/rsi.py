@@ -25,7 +25,7 @@ def calculRSIDecision(infoValue: valueHandler):
     Hx = 0
     Bx = 0
     pred = infoValue.periodTab[0]
-    for index in range(1, len(infoValue.periodTab) - 1, 1):
+    for index in range(1, infoValue.period, 1):
         if (pred <= infoValue.periodTab[index]):
             Hx += (infoValue.periodTab[index] - pred)
         else:
