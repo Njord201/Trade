@@ -106,6 +106,8 @@ class Bot:
                     else:
                         index += 1
 
+                if (btcToSell < 0.0001):
+                        sellStatus = False
                 if (sellStatus == True):
                     print(f'SELL\n', file=sys.stderr)
                     print(f'sell USDT_BTC {btcToSell}', flush=True)
@@ -117,7 +119,7 @@ class Bot:
                     buyStatus = True
                     print(f'BUY\n', file=sys.stderr)
                     print(f'buy USDT_BTC {1 * affordable}', flush=True)
-                    self.infoValue.dataBuy.append([current_closing_price, (0.6 * affordable) * 0.998, 0])
+                    self.infoValue.dataBuy.append([current_closing_price, (0.2 * affordable) * 0.998, 0])
 
                 if (rsi_15 > 73):
                     buyStatus = True
